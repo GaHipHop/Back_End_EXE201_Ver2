@@ -40,6 +40,29 @@ namespace GaHipHop_API.Controllers.Category
             }
         }
 
+        [HttpGet("GetAllCategoryTrue")]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> GetAllCategoryTrue([FromQuery] QueryObject queryObject)
+        {
+            try
+            {
+                var categories = await _categoryService.GetAllCategoryTrue(queryObject);
+                return CustomResult("Get all Data Successfully", categories);
+            }
+            catch (CustomException.ForbbidenException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.Forbidden);
+            }
+            catch (CustomException.DataNotFoundException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.NotFound);
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
         [HttpGet("GetAllCategoryFalse")]
         [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> GetAllCategoryFalse([FromQuery] QueryObject queryObject)

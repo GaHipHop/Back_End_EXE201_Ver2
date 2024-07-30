@@ -72,6 +72,44 @@ namespace GaHipHop_Service.Service
             return productResponses;
         }
 
+        public async Task<List<ProductAnyKindResponse>> GetAllProductTrue(QueryObject queryObject)
+        {
+
+            var products = _unitOfWork.ProductRepository.Get(
+                filter: p => queryObject.SearchText == null || p.ProductName.Contains(queryObject.SearchText),
+                pageIndex: 1,
+                pageSize: 5)
+                .Where(k => k.Status == true)
+                .ToList();
+            if (!products.Any())
+            {
+                throw new CustomException.DataNotFoundException("No Product False in Database");
+            }
+
+            var productResponses = new List<ProductAnyKindResponse>();
+            foreach (var product in products)
+            {
+                var productResponse = _mapper.Map<ProductAnyKindResponse>(product);
+
+                // Discount calculation logic
+                var discount = _unitOfWork.DiscountRepository.GetByID(product.DiscountId);
+
+                if (discount != null && discount.ExpiredDate >= DateTime.Now && discount.Status)
+                {
+                    var discountedPrice = product.ProductPrice * (1 - discount.Percent / 100);
+                    productResponse.CurrentPrice = Math.Round(discountedPrice, 3);
+                }
+                else
+                {
+                    productResponse.CurrentPrice = product.ProductPrice;
+                }
+
+                productResponses.Add(productResponse);
+            }
+
+            return productResponses;
+        }
+
         public async Task<List<ProductAnyKindResponse>> GetAllProductFalse(QueryObject queryObject)
         {
 
@@ -79,7 +117,12 @@ namespace GaHipHop_Service.Service
                 filter: p => queryObject.SearchText == null || p.ProductName.Contains(queryObject.SearchText),
                 pageIndex: 1,
                 pageSize: 5)
-                .Where(k => k.Status == false);
+                .Where(k => k.Status == false)
+                .ToList();
+            if (!products.Any())
+            {
+                throw new CustomException.DataNotFoundException("No Product False in Database");
+            }
 
             var productResponses = new List<ProductAnyKindResponse>();
             foreach (var product in products)

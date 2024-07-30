@@ -41,6 +41,25 @@ namespace GaHipHop_API.Controllers.Product
             }
         }
 
+        [HttpGet("GetAllProductTrue")]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> GetAllProductTrue([FromQuery] QueryObject queryObject)
+        {
+            try
+            {
+                var product = await _productService.GetAllProductTrue(queryObject);
+                return CustomResult("Get all data Successfully", product);
+            }
+            catch (CustomException.ForbbidenException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.Forbidden);
+            }
+            catch (CustomException.DataNotFoundException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.NotFound);
+            }
+        }
+
         [HttpGet("GetAllProductFalse")]
         [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> GetAllProductFalse([FromQuery] QueryObject queryObject)

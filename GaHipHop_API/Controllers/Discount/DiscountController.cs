@@ -43,6 +43,29 @@ namespace GaHipHop_API.Controllers.Discont
             }
         }
 
+        [HttpGet("GetAllDiscountTrue")]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> GetAllDiscountTrue()
+        {
+            try
+            {
+                var discount = await _discountService.GetAllDiscountTrue();
+                return CustomResult("Load Successfull", discount, HttpStatusCode.OK);
+            }
+            catch (CustomException.DataNotFoundException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.NotFound);
+            }
+            catch (CustomException.InvalidDataException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
         [HttpGet("GetAllDiscountFalse")]
         [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> GetAllDiscountFalse()

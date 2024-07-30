@@ -100,6 +100,26 @@ namespace GaHipHop_Service.Service
             return categoryResponses;
         }
 
+        public async Task<List<CategoryResponse>> GetAllCategoryTrue(QueryObject queryObject)
+        {
+
+
+            var categories = _unitOfWork.CategoryRepository.Get(
+                filter: p => queryObject.SearchText == null || p.CategoryName.Contains(queryObject.SearchText),
+                pageIndex: 1,
+                pageSize: 5)
+                .Where(k => k.Status == true)
+                .ToList();
+            if (!categories.Any())
+            {
+                throw new CustomException.DataNotFoundException("No Category Available in Database");
+            }
+
+            var categoryResponses = _mapper.Map<List<CategoryResponse>>(categories);
+
+            return categoryResponses;
+        }
+
         public async Task<List<CategoryResponse>> GetAllCategoryFalse(QueryObject queryObject)
         {
 
