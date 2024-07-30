@@ -448,5 +448,27 @@ namespace GaHipHop_Service.Service
             }
         }
 
+        public async Task<bool> AvailableProduct(long id)
+        {
+            try
+            {
+
+                var product = _unitOfWork.ProductRepository.GetByID(id);
+                if (product == null)
+                {
+                    throw new CustomException.DataNotFoundException("Product not found.");
+                }
+
+                product.Status = true;
+                _unitOfWork.ProductRepository.Update(product);
+                _unitOfWork.Save();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

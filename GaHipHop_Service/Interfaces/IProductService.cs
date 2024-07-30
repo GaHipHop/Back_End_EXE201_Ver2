@@ -19,6 +19,7 @@ namespace GaHipHop_Service.Interfaces
         Task<ProductAnyKindResponse> CreateProduct(ProductRequest productRequest);
         Task<ProductResponse> UpdateProduct(long id, ProductRequest productRequest);
         Task<bool> DeleteProduct(long id);
+        Task<bool> AvailableProduct(long id);
         Task<ProductAnyKindResponse> GetProductById(long id);
     }
 }

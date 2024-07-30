@@ -120,5 +120,23 @@ namespace GaHipHop_Service.Service
             var discountResponse = _mapper.Map<DiscountResponse>(deleteDiscount);
             return discountResponse;
         }
+
+        public async Task<DiscountResponse> AvailableDiscount(long id)
+        {
+
+            var availableDiscount = _unitOfWork.DiscountRepository.GetByID(id);
+            if (availableDiscount == null)
+            {
+                throw new Exception("Discount ID is not exist");
+            }
+
+            availableDiscount.Status = true;
+            _unitOfWork.DiscountRepository.Update(availableDiscount);
+            _unitOfWork.Save();
+
+            //map vào giá trị response
+            var discountResponse = _mapper.Map<DiscountResponse>(availableDiscount);
+            return discountResponse;
+        }
     }
 }

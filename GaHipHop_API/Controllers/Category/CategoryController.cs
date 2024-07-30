@@ -192,5 +192,33 @@ namespace GaHipHop_API.Controllers.Category
             }
 
         }
+
+        [HttpDelete("AvailableCategory/{id}")]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> AvailableCategory(long id)
+        {
+            try
+            {
+                var category = await _categoryService.AvailableCategory(id);
+                return CustomResult("Available Category Successfull (Status)", category, HttpStatusCode.OK);
+            }
+            catch (CustomException.ForbbidenException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.Forbidden);
+            }
+            catch (CustomException.DataNotFoundException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.NotFound);
+            }
+            catch (CustomException.DataExistException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.Conflict);
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.InternalServerError);
+            }
+
+        }
     }
 }

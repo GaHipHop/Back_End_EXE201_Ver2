@@ -81,6 +81,28 @@ namespace GaHipHop_Service.Service
             }
         }
 
+        public async Task<bool> AvailableCategory(long id)
+        {
+            try
+            {
+                var category = _unitOfWork.CategoryRepository.GetByID(id);
+                if (category == null)
+                {
+                    throw new CustomException.DataNotFoundException("Category not found.");
+                }
+
+                category.Status = true;
+                _unitOfWork.CategoryRepository.Update(category);
+                _unitOfWork.Save();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<List<CategoryResponse>> GetAllCategory(QueryObject queryObject)
         {
             var categories = _unitOfWork.CategoryRepository.Get(

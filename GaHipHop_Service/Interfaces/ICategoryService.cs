@@ -18,5 +18,6 @@ namespace GaHipHop_Service.Interfaces
         Task<CategoryResponse> CreateCategory(CategoryRequest categoryRequest);
         Task<CategoryResponse> UpdateCategory(long id, CategoryRequest categoryRequest);
         Task<bool> DeleteCategory(long id);
+        Task<bool> AvailableCategory(long id);
     }
 }
