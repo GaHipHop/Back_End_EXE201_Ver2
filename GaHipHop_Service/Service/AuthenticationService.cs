@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GaHipHop_Model.DTO.Request;
 using GaHipHop_Model.DTO.Response;
+using GaHipHop_Repository.Entity;
 using GaHipHop_Repository.Repository;
 using GaHipHop_Service.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +27,25 @@ namespace GaHipHop_Service.Service
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
+        public async Task<(string Token, LoginResponse loginResponse)> AuthorizeLoginGoogleUser(LoginGoogleRequest loginGoogleRequest)
+        {
+            var authentication = new Authentication(_configuration, _unitOfWork);
+
+            var admin = _unitOfWork.AdminRepository.Get(a => a.Email == loginGoogleRequest.Email).FirstOrDefault();
+
+            if (admin != null)
+            {
+                var token = authentication.GenerateToken(admin);
+
+                var adminResponse = _mapper.Map<LoginResponse>(admin);
+
+                return (token, adminResponse);
+            }
+
+            return (null, null);
+        }
+
 
         public async Task<(string Token, LoginResponse loginResponse)> AuthorizeUser(LoginRequest loginRequest)
         {

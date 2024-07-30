@@ -296,6 +296,12 @@ namespace GaHipHop_Service.Service
                         throw new CustomException.DataNotFoundException("not found.");
                     }
 
+                    var existingOrder = _unitOfWork.OrderRepository.Get(o => o.OrderCode == values[4]).FirstOrDefault();
+                    if (existingOrder != null)
+                    {
+                        continue;
+                    }
+
                     var order = new Order
                     {
                         UserId = userInfo.Id,

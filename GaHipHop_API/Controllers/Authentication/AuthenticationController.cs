@@ -33,5 +33,21 @@ namespace GaHipHop_API.Controllers.Authentication
                 return CustomResult("Invalid email or password.", HttpStatusCode.Unauthorized);
             }
         }
+
+        [HttpPost("login-google")]
+        public async Task<IActionResult> LoginWithGoogle([FromBody] LoginGoogleRequest loginGoogleRequest)
+        {
+            var result = await _authenticationService.AuthorizeLoginGoogleUser(loginGoogleRequest);
+
+            if (result.Token != null)
+            {
+                return CustomResult("Login successful.", new { result.Token, LoginResponse = result.loginResponse });
+            }
+            else
+            {
+                return CustomResult("Invalid email or password.", HttpStatusCode.Unauthorized);
+            }
+        }
+
     }
 }
