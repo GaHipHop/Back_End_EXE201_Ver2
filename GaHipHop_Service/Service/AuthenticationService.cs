@@ -42,5 +42,23 @@ namespace GaHipHop_Service.Service
             }
             return (null, null);
         }
+
+        public async Task<(string Token, LoginResponse loginResponse)> AuthorizeLoginGoogleUser(LoginGoogleRequest loginGoogleRequest)
+        {
+            var authentication = new Authentication(_configuration, _unitOfWork);
+
+            var admin = _unitOfWork.AdminRepository.Get(a => a.Email == loginGoogleRequest.Email).FirstOrDefault();
+
+            if (admin != null)
+            {
+                var token = authentication.GenerateToken(admin);
+
+                var adminResponse = _mapper.Map<LoginResponse>(admin);
+
+                return (token, adminResponse);
+            }
+
+            return (null, null);
+        }
     }
 }

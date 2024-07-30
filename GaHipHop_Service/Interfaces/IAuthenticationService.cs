@@ -11,5 +11,7 @@ namespace GaHipHop_Service.Interfaces
     public interface IAuthenticationService
     {
         Task<(string Token, LoginResponse loginResponse)> AuthorizeUser(LoginRequest loginRequest);
+
+        Task<(string Token, LoginResponse loginResponse)> AuthorizeLoginGoogleUser(LoginGoogleRequest loginGoogleRequest);
     }
 }
