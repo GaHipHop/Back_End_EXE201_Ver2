@@ -64,7 +64,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Admin");
+                    b.ToTable("Admin", (string)null);
 
                     b.HasData(
                         new
@@ -110,7 +110,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
 
                     b.HasData(
                         new
@@ -161,7 +161,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contact");
+                    b.ToTable("Contact", (string)null);
 
                     b.HasData(
                         new
@@ -195,7 +195,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Discount");
+                    b.ToTable("Discount", (string)null);
 
                     b.HasData(
                         new
@@ -256,7 +256,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Kind");
+                    b.ToTable("Kind", (string)null);
 
                     b.HasData(
                         new
@@ -358,7 +358,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Order", (string)null);
 
                     b.HasData(
                         new
@@ -397,7 +397,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
 
                     b.HasData(
                         new
@@ -458,7 +458,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasIndex("DiscountId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Product", (string)null);
 
                     b.HasData(
                         new
@@ -561,7 +561,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("Role", (string)null);
 
                     b.HasData(
                         new
@@ -602,7 +602,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserInfo");
+                    b.ToTable("UserInfo", (string)null);
 
                     b.HasData(
                         new

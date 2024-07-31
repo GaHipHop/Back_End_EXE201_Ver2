@@ -110,7 +110,6 @@ namespace GaHipHop_Service.Service
 
                 var admin = _mapper.Map<Admin>(adminRequest);
 
-                admin.Password = authentication.HashPassword(adminRequest.Password);
                 admin.Status = true;
                 admin.RoleId = 1;
 
@@ -140,8 +139,6 @@ namespace GaHipHop_Service.Service
                 }
 
                 var admin = _mapper.Map(adminRequest, existingAdmin);
-
-                admin.Password = authentication.HashPassword(adminRequest.Password);
 
                 _unitOfWork.AdminRepository.Update(existingAdmin);
                 _unitOfWork.Save();
