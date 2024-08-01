@@ -41,6 +41,25 @@ namespace GaHipHop_API.Controllers.Product
             }
         }
 
+        [HttpGet("GetAllProductTrue")]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> GetAllProductTrue([FromQuery] QueryObject queryObject)
+        {
+            try
+            {
+                var product = await _productService.GetAllProductTrue(queryObject);
+                return CustomResult("Get all data Successfully", product);
+            }
+            catch (CustomException.ForbbidenException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.Forbidden);
+            }
+            catch (CustomException.DataNotFoundException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.NotFound);
+            }
+        }
+
         [HttpGet("GetAllProductFalse")]
         [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> GetAllProductFalse([FromQuery] QueryObject queryObject)
@@ -164,6 +183,30 @@ namespace GaHipHop_API.Controllers.Product
             try
             {
                 var deleteProduct = await _productService.DeleteProduct(id);
+                return CustomResult("Delete Prodcut Successfull (Status)", deleteProduct, HttpStatusCode.OK);
+            }
+            catch (CustomException.ForbbidenException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.Forbidden);
+            }
+            catch (CustomException.DataNotFoundException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.NotFound);
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.InternalServerError);
+            }
+
+        }
+
+        [HttpDelete("AvailableProduct/{id}")]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> AvailableProduct(long id)
+        {
+            try
+            {
+                var deleteProduct = await _productService.AvailableProduct(id);
                 return CustomResult("Delete Prodcut Successfull (Status)", deleteProduct, HttpStatusCode.OK);
             }
             catch (CustomException.ForbbidenException ex)

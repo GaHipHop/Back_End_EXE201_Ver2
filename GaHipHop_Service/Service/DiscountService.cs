@@ -37,20 +37,38 @@ namespace GaHipHop_Service.Service
                 pageSize: 5);
             return discount;
         }
+        public async Task<Discount> GetDiscountById(long id)
+        {
+            var discount = _unitOfWork.DiscountRepository.GetByID(id);
+            return discount;
+        }
+
+        public async Task<IEnumerable<Discount>> GetAllDiscountTrue()
+        {
+            var discount = _unitOfWork.DiscountRepository.Get(d => d.Status == true,
+                pageIndex: 1,
+                pageSize: 5)
+                .ToList();
+            if (!discount.Any())
+            {
+                throw new CustomException.DataNotFoundException("No Discount False in Database");
+            }
+            return discount;
+        }
 
         public async Task<IEnumerable<Discount>> GetAllDiscountFalse()
         {
             var discount = _unitOfWork.DiscountRepository.Get(d => d.Status == false,
                 pageIndex: 1,
-                pageSize: 5);
-            return discount;
-        }
+                pageSize: 5)
+                .ToList();
 
-        public async Task<Discount> GetDiscountById(long id)
-        {
+            if (!discount.Any())
+            {
+                throw new CustomException.DataNotFoundException("No Discount False in Database");
+            }
 
 
-            var discount = _unitOfWork.DiscountRepository.GetByID(id);
             return discount;
         }
 
@@ -100,6 +118,24 @@ namespace GaHipHop_Service.Service
 
             //map vào giá trị response
             var discountResponse = _mapper.Map<DiscountResponse>(deleteDiscount);
+            return discountResponse;
+        }
+
+        public async Task<DiscountResponse> AvailableDiscount(long id)
+        {
+
+            var availableDiscount = _unitOfWork.DiscountRepository.GetByID(id);
+            if (availableDiscount == null)
+            {
+                throw new Exception("Discount ID is not exist");
+            }
+
+            availableDiscount.Status = true;
+            _unitOfWork.DiscountRepository.Update(availableDiscount);
+            _unitOfWork.Save();
+
+            //map vào giá trị response
+            var discountResponse = _mapper.Map<DiscountResponse>(availableDiscount);
             return discountResponse;
         }
     }

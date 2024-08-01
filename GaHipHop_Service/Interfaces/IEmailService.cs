@@ -12,5 +12,7 @@ namespace GaHipHop_Service.Interfaces
     {
         Task SendConfirmedOrderEmailAsync(string toEmail, OrderResponse orderResponse);
         Task SendRejectedOrderEmailAsync(string toEmail, OrderResponse orderResponse);
+
+        Task SendEmailAsync(string toEmail, string subject, string message);
     }
 }

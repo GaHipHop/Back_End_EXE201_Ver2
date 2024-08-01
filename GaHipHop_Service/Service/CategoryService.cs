@@ -81,6 +81,28 @@ namespace GaHipHop_Service.Service
             }
         }
 
+        public async Task<bool> AvailableCategory(long id)
+        {
+            try
+            {
+                var category = _unitOfWork.CategoryRepository.GetByID(id);
+                if (category == null)
+                {
+                    throw new CustomException.DataNotFoundException("Category not found.");
+                }
+
+                category.Status = true;
+                _unitOfWork.CategoryRepository.Update(category);
+                _unitOfWork.Save();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<List<CategoryResponse>> GetAllCategory(QueryObject queryObject)
         {
             var categories = _unitOfWork.CategoryRepository.Get(
@@ -93,6 +115,26 @@ namespace GaHipHop_Service.Service
             if (!categories.Any())
             {
                 throw new CustomException.DataNotFoundException("No Category in Database");
+            }
+
+            var categoryResponses = _mapper.Map<List<CategoryResponse>>(categories);
+
+            return categoryResponses;
+        }
+
+        public async Task<List<CategoryResponse>> GetAllCategoryTrue(QueryObject queryObject)
+        {
+
+
+            var categories = _unitOfWork.CategoryRepository.Get(
+                filter: p => queryObject.SearchText == null || p.CategoryName.Contains(queryObject.SearchText),
+                pageIndex: 1,
+                pageSize: 5)
+                .Where(k => k.Status == true)
+                .ToList();
+            if (!categories.Any())
+            {
+                throw new CustomException.DataNotFoundException("No Category Available in Database");
             }
 
             var categoryResponses = _mapper.Map<List<CategoryResponse>>(categories);

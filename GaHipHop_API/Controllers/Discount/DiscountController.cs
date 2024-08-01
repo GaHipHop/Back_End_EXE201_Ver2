@@ -43,6 +43,29 @@ namespace GaHipHop_API.Controllers.Discont
             }
         }
 
+        [HttpGet("GetAllDiscountTrue")]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> GetAllDiscountTrue()
+        {
+            try
+            {
+                var discount = await _discountService.GetAllDiscountTrue();
+                return CustomResult("Load Successfull", discount, HttpStatusCode.OK);
+            }
+            catch (CustomException.DataNotFoundException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.NotFound);
+            }
+            catch (CustomException.InvalidDataException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
         [HttpGet("GetAllDiscountFalse")]
         [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> GetAllDiscountFalse()
@@ -150,6 +173,25 @@ namespace GaHipHop_API.Controllers.Discont
             try
             {
                 var deletediscount = await _discountService.DeleteDiscount(id);
+                return CustomResult("Delete Successfull (Status)", deletediscount, HttpStatusCode.OK);
+            }
+            catch (CustomException.ForbbidenException ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.Forbidden);
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpDelete("AvailableDiscount/{id}")]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> AvailableDiscount(long id)
+        {
+            try
+            {
+                var deletediscount = await _discountService.AvailableDiscount(id);
                 return CustomResult("Delete Successfull (Status)", deletediscount, HttpStatusCode.OK);
             }
             catch (CustomException.ForbbidenException ex)

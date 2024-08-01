@@ -12,12 +12,14 @@ namespace GaHipHop_Service.Interfaces
     public interface IProductService
     {
         Task<List<ProductResponse>> GetAllProduct(QueryObject queryObject);
+        Task<List<ProductAnyKindResponse>> GetAllProductTrue(QueryObject queryObject);
         Task<List<ProductAnyKindResponse>> GetAllProductFalse(QueryObject queryObject);
         Task<List<ProductResponse>> GetAllProductByCategoryId(long id);
         /*Task<ProductResponse> CreateProduct(ProductRequest productRequest);*/
         Task<ProductAnyKindResponse> CreateProduct(ProductRequest productRequest);
         Task<ProductResponse> UpdateProduct(long id, ProductRequest productRequest);
         Task<bool> DeleteProduct(long id);
+        Task<bool> AvailableProduct(long id);
         Task<ProductAnyKindResponse> GetProductById(long id);
     }
 }

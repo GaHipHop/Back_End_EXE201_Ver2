@@ -12,10 +12,12 @@ namespace GaHipHop_Service.Interfaces
     public interface ICategoryService
     {
         Task<List<CategoryResponse>> GetAllCategory(QueryObject queryObject);
+        Task<List<CategoryResponse>> GetAllCategoryTrue(QueryObject queryObject);
         Task<List<CategoryResponse>> GetAllCategoryFalse(QueryObject queryObject);
         Task<CategoryResponse> GetCategoryById(long id);
         Task<CategoryResponse> CreateCategory(CategoryRequest categoryRequest);
         Task<CategoryResponse> UpdateCategory(long id, CategoryRequest categoryRequest);
         Task<bool> DeleteCategory(long id);
+        Task<bool> AvailableCategory(long id);
     }
 }

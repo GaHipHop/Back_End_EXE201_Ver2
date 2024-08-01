@@ -4,6 +4,7 @@ using GaHipHop_Repository.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GaHipHop_API.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240730101748_Kaneki")]
+    partial class Kaneki
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,7 +67,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Admin", (string)null);
+                    b.ToTable("Admin");
 
                     b.HasData(
                         new
@@ -110,7 +113,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category", (string)null);
+                    b.ToTable("Category");
 
                     b.HasData(
                         new
@@ -161,7 +164,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contact", (string)null);
+                    b.ToTable("Contact");
 
                     b.HasData(
                         new
@@ -195,7 +198,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Discount", (string)null);
+                    b.ToTable("Discount");
 
                     b.HasData(
                         new
@@ -256,7 +259,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Kind", (string)null);
+                    b.ToTable("Kind");
 
                     b.HasData(
                         new
@@ -358,7 +361,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order", (string)null);
+                    b.ToTable("Order");
 
                     b.HasData(
                         new
@@ -397,7 +400,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
 
                     b.HasData(
                         new
@@ -458,7 +461,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasIndex("DiscountId");
 
-                    b.ToTable("Product", (string)null);
+                    b.ToTable("Product");
 
                     b.HasData(
                         new
@@ -561,7 +564,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role", (string)null);
+                    b.ToTable("Role");
 
                     b.HasData(
                         new
@@ -602,7 +605,7 @@ namespace GaHipHop_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserInfo", (string)null);
+                    b.ToTable("UserInfo");
 
                     b.HasData(
                         new

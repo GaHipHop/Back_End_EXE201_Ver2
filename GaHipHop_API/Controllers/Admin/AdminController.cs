@@ -65,7 +65,7 @@ namespace GaHipHop_API.Controllers.Admin
         }
 
         [HttpGet("getAdminById/{id}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAdminById(long id)
         {
             try
@@ -129,7 +129,7 @@ namespace GaHipHop_API.Controllers.Admin
         }
 
         [HttpPatch("updateAdmin/{id}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateAdmin(long id, [FromBody] AdminRequest adminRequest)
         {
             if (!ModelState.IsValid)
