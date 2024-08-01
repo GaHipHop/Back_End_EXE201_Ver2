@@ -58,6 +58,7 @@ namespace GaHipHop_Service.Service
                 {
                     var discountedPrice = product.ProductPrice * (1 - discount.Percent / 100);
                     productResponse.CurrentPrice = Math.Round(discountedPrice, 3);
+                    productResponse.Percent = discount.Percent;
                 }
                 else
                 {
@@ -67,7 +68,13 @@ namespace GaHipHop_Service.Service
                 productResponses.Add(productResponse);
             }
 
-            return productResponses;
+            var sortedProductResponses = productResponses
+                .OrderByDescending(p => p.Percent)
+                .OrderByDescending(p => p.CurrentPrice < p.ProductPrice)
+                .ThenByDescending(p => p.CreateDate)
+                .ToList();
+
+            return sortedProductResponses;
         }
 
         public async Task<List<ProductAnyKindResponse>> GetAllProductTrue(QueryObject queryObject)
@@ -162,8 +169,33 @@ namespace GaHipHop_Service.Service
                 throw new CustomException.DataNotFoundException($"Category with ID: {id} does not have any Kind");
             }
 
-            var productResponses = _mapper.Map<List<ProductResponse>>(products);
-            return productResponses;
+            var productResponses = new List<ProductResponse>();
+            foreach (var product in products)
+            {
+                var productResponse = _mapper.Map<ProductResponse>(product);
+                var discount = _unitOfWork.DiscountRepository.GetByID(product.DiscountId);
+
+                if (discount != null && discount.ExpiredDate >= DateTime.Now && discount.Status)
+                {
+                    var discountedPrice = product.ProductPrice * (1 - discount.Percent / 100);
+                    productResponse.CurrentPrice = Math.Round(discountedPrice, 3);
+                    productResponse.Percent = discount.Percent;
+                }
+                else
+                {
+                    productResponse.CurrentPrice = product.ProductPrice;
+                }
+
+                productResponses.Add(productResponse);
+            }
+
+            var sortedProductResponses = productResponses
+                .OrderByDescending(p => p.Percent)
+                .OrderByDescending(p => p.CurrentPrice < p.ProductPrice)
+                .ThenByDescending(p => p.CreateDate)
+                .ToList();
+
+            return sortedProductResponses;
         }
 
         public async Task<ProductAnyKindResponse> GetProductById(long id)
